@@ -18,12 +18,22 @@ interface ICurrAttempt {
     letterPos: number;
 }
 
+// Interface of Game Over State
+interface IGameOver {
+    gameOver: boolean;
+    guessedWord: boolean;
+}
+
 // Interface of Context Hook
 interface IContext {
     board: IBoard;
     currAttempt: ICurrAttempt;
+    disabledLetters: string[];
+    gameOver: IGameOver;
     setBoard: Dispatch<SetStateAction<IBoard>>;
     setCurrAttempt: Dispatch<SetStateAction<ICurrAttempt>>;
+    setDisabledLetters: Dispatch<SetStateAction<string[]>>;
+    setGameOver: Dispatch<SetStateAction<IGameOver>>;
     correctWord: string;
     onSelectLetter: (keyVal: string) => void;
     onDeleteLetter: () => void;
@@ -36,6 +46,11 @@ const BoardContext = createContext<IContext>({} as IContext);
 const BoardProvider: FC<ReactNode> = ({ children }) => {
     // States
     const [board, setBoard] = useState<IBoard>(boardDefault);
+    const [disabledLetters, setDisabledLetters] = useState<string[]>([]);
+    const [gameOver, setGameOver] = useState<IGameOver>({
+        gameOver: false,
+        guessedWord: false,
+    });
     const [currAttempt, setCurrAttempt] = useState<ICurrAttempt>({
         attempt: 0,
         letterPos: 0,
@@ -92,6 +107,14 @@ const BoardProvider: FC<ReactNode> = ({ children }) => {
                 attempt: prev.attempt + 1,
                 letterPos: 0,
             }));
+            if (currWord === correctWord) {
+                setGameOver((prev) => ({ gameOver: true, guessedWord: true }));
+                return;
+            }
+            if (currAttempt.attempt === 5) {
+                setGameOver((prev) => ({ gameOver: true, guessedWord: false }));
+                return;
+            }
         } else {
             alert("Word Not in Word Bank");
         }
@@ -110,6 +133,10 @@ const BoardProvider: FC<ReactNode> = ({ children }) => {
                 onDeleteLetter,
                 onEnter,
                 correctWord,
+                disabledLetters,
+                setDisabledLetters,
+                gameOver,
+                setGameOver,
             }}>
             {children}
         </BoardContext.Provider>
