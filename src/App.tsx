@@ -1,21 +1,20 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Board from "./components/Board";
+import GameOver from "./components/GameOver";
 import Keyboard from "./components/Keyboard";
-import BoardProvider from "./context/BoardContext";
-import { generateWordSet } from "./utils/words";
+import { useBoard } from "./context/BoardContext";
 
 function App() {
+    const { gameOver } = useBoard();
     return (
         <div className="App">
             <nav>
                 <h1>Wordle</h1>
             </nav>
-            <BoardProvider>
-                <div className="game">
-                    <Board />
-                    <Keyboard />
-                </div>
-            </BoardProvider>
+            <div className="game">
+                <Board />
+                {gameOver.gameOver ? <GameOver /> : <Keyboard />}
+            </div>
         </div>
     );
 }
