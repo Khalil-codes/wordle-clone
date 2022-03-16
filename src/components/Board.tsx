@@ -7,20 +7,22 @@ type Props = {};
 const Board: FC<Props> = (props) => {
     const { board } = useBoard();
     return (
-        <div className="board">
-            {board.map((row: string[], rowIdx: number) => {
-                return (
-                    <div className="row" key={rowIdx}>
-                        {row.map((col: string, colIdx: number) => (
-                            <Letter
-                                key={colIdx}
-                                letterPos={colIdx}
-                                attemptVal={rowIdx}
-                            />
-                        ))}
-                    </div>
-                );
-            })}
+        <div className="board-container">
+            <div className="board">
+                {board.map((row: string[], rowIdx: number) => {
+                    return (
+                        <div className="row" key={rowIdx}>
+                            {row.map((col: string, colIdx: number) => (
+                                <Letter
+                                    key={colIdx}
+                                    letterPos={colIdx}
+                                    attemptVal={rowIdx}
+                                />
+                            ))}
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 };
