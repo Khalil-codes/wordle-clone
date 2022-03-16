@@ -23,7 +23,7 @@ const Letter: FC<Props> = ({ letterPos, attemptVal }) => {
 
     useEffect(() => {
         if (letter && !correct && !almost) {
-            setDisabledLetters((prev) => [...prev, letter]);
+            setDisabledLetters((prev) => [...new Set([...prev, letter])]);
         }
     }, [currAttempt.attempt]);
     return (

@@ -47,6 +47,7 @@ const BoardProvider: FC<ReactNode> = ({ children }) => {
     // States
     const [board, setBoard] = useState<IBoard>(boardDefault);
     const [disabledLetters, setDisabledLetters] = useState<string[]>([]);
+    const [correctWord, setCorrectWord] = useState<string>("");
     const [gameOver, setGameOver] = useState<IGameOver>({
         gameOver: false,
         guessedWord: false,
@@ -64,12 +65,10 @@ const BoardProvider: FC<ReactNode> = ({ children }) => {
         const unSub = async () => {
             const words = await generateWordSet();
             setWordSet(words.wordSet);
+            setCorrectWord(words.todaysWord.toUpperCase());
         };
         unSub();
     }, []);
-
-    // Dummy word
-    const correctWord: string = "BAKER";
 
     // When User selects a letter
     const onSelectLetter = (keyVal: string) => {
@@ -120,7 +119,6 @@ const BoardProvider: FC<ReactNode> = ({ children }) => {
         }
         console.log(currWord);
     };
-
     // Returning Provider
     return (
         <BoardContext.Provider
