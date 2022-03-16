@@ -1,0 +1,6 @@
+{
+  "tabWidth": 4,
+  "arrowParens": "always",
+  "bracketSameLine": true,
+  "bracketSpacing": true
+}
