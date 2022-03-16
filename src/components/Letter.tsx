@@ -7,9 +7,24 @@ type Props = {
 };
 
 const Letter: FC<Props> = ({ letterPos, attemptVal }) => {
-    const { board } = useBoard();
+    const { board, correctWord, currAttempt } = useBoard();
     const letter = board[attemptVal][letterPos];
-    return <div className="letter">{letter}</div>;
+    const correct: boolean = correctWord[letterPos] === letter;
+    const almost: boolean =
+        !correct && letter !== "" && correctWord.includes(letter);
+    const letterState: string =
+        currAttempt.attempt > attemptVal
+            ? correct
+                ? "correct"
+                : almost
+                ? "almost"
+                : "error"
+            : "";
+    return (
+        <div className="letter" id={letterState}>
+            {letter}
+        </div>
+    );
 };
 
 export default Letter;

@@ -14,7 +14,7 @@ const Keyboard: FC<Props> = (props) => {
     // Handling Keyboard events
     const handleKeyboard = useCallback(
         function (this: Document, event: KeyboardEvent): any {
-            if (event.key == "Enter") {
+            if (event.key === "Enter") {
                 onEnter();
             } else if (event.key === "Backspace") {
                 onDeleteLetter();
