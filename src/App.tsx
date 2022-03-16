@@ -13,7 +13,9 @@ function App() {
             </nav>
             <div className="game">
                 <Board />
-                {gameOver.gameOver ? <GameOver /> : <Keyboard />}
+                <Keyboard />
+                {/* {gameOver.gameOver && <GameOver />} */}
+                <GameOver />
             </div>
         </div>
     );
