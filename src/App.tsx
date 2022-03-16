@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
 import BoardProvider from "./context/BoardContext";
+import { generateWordSet } from "./utils/words";
 
 function App() {
     return (
