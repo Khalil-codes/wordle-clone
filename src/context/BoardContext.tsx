@@ -5,10 +5,12 @@ import {
     ReactNode,
     SetStateAction,
     useContext,
+    useEffect,
     useState,
 } from "react";
+import { Set } from "typescript";
 import { IBoard } from "../types";
-import { boardDefault } from "../utils/words";
+import { boardDefault, generateWordSet } from "../utils/words";
 
 // Interface of CurrAttempt State
 interface ICurrAttempt {
@@ -22,6 +24,7 @@ interface IContext {
     currAttempt: ICurrAttempt;
     setBoard: Dispatch<SetStateAction<IBoard>>;
     setCurrAttempt: Dispatch<SetStateAction<ICurrAttempt>>;
+    correctWord: string;
     onSelectLetter: (keyVal: string) => void;
     onDeleteLetter: () => void;
     onEnter: () => void;
@@ -37,6 +40,21 @@ const BoardProvider: FC<ReactNode> = ({ children }) => {
         attempt: 0,
         letterPos: 0,
     });
+    const [wordSet, setWordSet] = useState<Set<string>>(
+        new Set() as Set<string>
+    );
+
+    // Gettin Word Set
+    useEffect(() => {
+        const unSub = async () => {
+            const words = await generateWordSet();
+            setWordSet(words.wordSet);
+        };
+        unSub();
+    }, []);
+
+    // Dummy word
+    const correctWord: string = "BAKER";
 
     // When User selects a letter
     const onSelectLetter = (keyVal: string) => {
@@ -65,10 +83,19 @@ const BoardProvider: FC<ReactNode> = ({ children }) => {
     // When User Presses Enter
     const onEnter = () => {
         if (currAttempt.letterPos !== 5) return;
-        setCurrAttempt((prev) => ({
-            attempt: prev.attempt + 1,
-            letterPos: 0,
-        }));
+        const currWord: string = board[currAttempt.attempt].reduce(
+            (acc: string, letter: string) => acc + letter,
+            ""
+        );
+        if (wordSet.has(currWord.toLowerCase())) {
+            setCurrAttempt((prev) => ({
+                attempt: prev.attempt + 1,
+                letterPos: 0,
+            }));
+        } else {
+            alert("Word Not in Word Bank");
+        }
+        console.log(currWord);
     };
 
     // Returning Provider
@@ -82,6 +109,7 @@ const BoardProvider: FC<ReactNode> = ({ children }) => {
                 onSelectLetter,
                 onDeleteLetter,
                 onEnter,
+                correctWord,
             }}>
             {children}
         </BoardContext.Provider>
