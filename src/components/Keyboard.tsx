@@ -5,7 +5,13 @@ import Key from "./Key";
 type Props = {};
 
 const Keyboard: FC<Props> = (props) => {
-    const { currAttempt, onSelectLetter, onDeleteLetter, onEnter } = useBoard();
+    const {
+        currAttempt,
+        onSelectLetter,
+        onDeleteLetter,
+        onEnter,
+        disabledLetters,
+    } = useBoard();
 
     const keys1: string[] = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
     const keys2: string[] = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
@@ -46,18 +52,30 @@ const Keyboard: FC<Props> = (props) => {
         <div className="keyboard" onKeyDown={handleKeyboard}>
             <div className="line1">
                 {keys1.map((key: string) => (
-                    <Key key={key} keyVal={key} />
+                    <Key
+                        key={key}
+                        keyVal={key}
+                        disbaled={disabledLetters.includes(key)}
+                    />
                 ))}
             </div>
             <div className="line2">
                 {keys2.map((key: string) => (
-                    <Key key={key} keyVal={key} />
+                    <Key
+                        key={key}
+                        keyVal={key}
+                        disbaled={disabledLetters.includes(key)}
+                    />
                 ))}
             </div>
             <div className="line3">
                 <Key keyVal="Enter" keylg />
                 {keys3.map((key: string) => (
-                    <Key key={key} keyVal={key} />
+                    <Key
+                        key={key}
+                        keyVal={key}
+                        disbaled={disabledLetters.includes(key)}
+                    />
                 ))}
                 <Key keyVal="Del" keylg />
             </div>

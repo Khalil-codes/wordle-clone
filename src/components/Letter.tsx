@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useBoard } from "../context/BoardContext";
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
 };
 
 const Letter: FC<Props> = ({ letterPos, attemptVal }) => {
-    const { board, correctWord, currAttempt } = useBoard();
+    const { board, correctWord, currAttempt, setDisabledLetters } = useBoard();
     const letter = board[attemptVal][letterPos];
     const correct: boolean = correctWord[letterPos] === letter;
     const almost: boolean =
@@ -20,6 +20,12 @@ const Letter: FC<Props> = ({ letterPos, attemptVal }) => {
                 ? "almost"
                 : "error"
             : "";
+
+    useEffect(() => {
+        if (letter && !correct && !almost) {
+            setDisabledLetters((prev) => [...prev, letter]);
+        }
+    }, [currAttempt.attempt]);
     return (
         <div className="letter" id={letterState}>
             {letter}
