@@ -10,7 +10,7 @@ import {
 } from "react";
 import { Set } from "typescript";
 import { IBoard } from "../types";
-import { boardDefault, generateWordSet } from "../utils/words";
+import { createEmptyBoard, generateWordSet } from "../utils/words";
 
 // Interface of CurrAttempt State
 interface ICurrAttempt {
@@ -33,11 +33,12 @@ interface IContext {
     setBoard: Dispatch<SetStateAction<IBoard>>;
     setCurrAttempt: Dispatch<SetStateAction<ICurrAttempt>>;
     setDisabledLetters: Dispatch<SetStateAction<string[]>>;
-    setGameOver: Dispatch<SetStateAction<IGameOver>>;
+    // setGameOver: Dispatch<SetStateAction<IGameOver>>;
     correctWord: string;
     onSelectLetter: (keyVal: string) => void;
     onDeleteLetter: () => void;
     onEnter: () => void;
+    playAgain: () => void;
 }
 
 // Creating Context
@@ -45,7 +46,7 @@ const BoardContext = createContext<IContext>({} as IContext);
 
 const BoardProvider: FC<ReactNode> = ({ children }) => {
     // States
-    const [board, setBoard] = useState<IBoard>(boardDefault);
+    const [board, setBoard] = useState<IBoard>(createEmptyBoard(5, 6));
     const [disabledLetters, setDisabledLetters] = useState<string[]>([]);
     const [correctWord, setCorrectWord] = useState<string>("");
     const [gameOver, setGameOver] = useState<IGameOver>({
@@ -60,14 +61,14 @@ const BoardProvider: FC<ReactNode> = ({ children }) => {
         new Set() as Set<string>
     );
 
+    const getWordSet = async () => {
+        const words = await generateWordSet();
+        setWordSet(words.wordSet);
+        setCorrectWord(words.todaysWord.toUpperCase());
+    };
     // Gettin Word Set
     useEffect(() => {
-        const unSub = async () => {
-            const words = await generateWordSet();
-            setWordSet(words.wordSet);
-            setCorrectWord(words.todaysWord.toUpperCase());
-        };
-        unSub();
+        getWordSet();
     }, []);
 
     // When User selects a letter
@@ -117,7 +118,13 @@ const BoardProvider: FC<ReactNode> = ({ children }) => {
         } else {
             alert("Word Not in Word Bank");
         }
-        console.log(currWord);
+    };
+    const playAgain = async () => {
+        await getWordSet();
+        setBoard(createEmptyBoard(5, 6));
+        setCurrAttempt({ letterPos: 0, attempt: 0 });
+        setDisabledLetters([]);
+        setGameOver({ gameOver: false, guessedWord: false });
     };
     // Returning Provider
     return (
@@ -134,7 +141,7 @@ const BoardProvider: FC<ReactNode> = ({ children }) => {
                 disabledLetters,
                 setDisabledLetters,
                 gameOver,
-                setGameOver,
+                playAgain,
             }}>
             {children}
         </BoardContext.Provider>
