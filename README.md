@@ -2,6 +2,8 @@
 
 A simple clone of infamous wordle game. Built using React and Context API. Also you don't have to wait hours to play new game, you can play as many games you want. You get 6 attempts to guess 5 letter word.
 
+![Wordle Clone](./snapshot/wordle-clone-react.png)
+
 ## Available Scripts
 
 In the project directory, you can run:
