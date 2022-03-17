@@ -8,9 +8,9 @@
     color: white;
 }
 
-body {
-    padding: 0%;
+* {
     margin: 0;
+    padding: 0;
 }
 
 nav {
@@ -31,7 +31,7 @@ nav h1 {
 }
 .game {
     width: 100vw;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 70px);
     display: flex;
     margin: auto;
     align-items: center;
@@ -152,6 +152,9 @@ nav h1 {
     align-items: center;
     z-index: 300;
 }
+.overlay.hidden {
+    display: none;
+}
 .gameOver {
     position: relative;
     border-radius: 8px;
@@ -163,10 +166,31 @@ nav h1 {
     max-height: 90%;
     overflow-y: auto;
     max-width: 500px;
-    padding: 16px;
+    padding: 40px 20px;
     box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
-
+.gameOver .text-display {
+    margin: 20px 0 10px 0;
+    font-size: 1.4rem;
+}
+.gameOver .correct-word {
+    color: #70be6a;
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+.gameOver .text-attempt {
+    margin-bottom: 20px;
+    font-weight: 400;
+}
+.btn {
+    border: none;
+    background: #fff;
+    outline: none;
+    padding: 10px 20px;
+    border-radius: 7px;
+    cursor: pointer;
+}
 @media (max-width: 700px) {
     .keyboard {
         width: 100vw;
